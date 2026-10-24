@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#4338ca">
+  <meta name="description" content="PWA para registrar incidencias con foto, ubicación y funcionamiento sin conexión.">
+  <title>Registro de Incidencias</title>
+
+  <!-- Manifest e iconos de la PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Incidencias">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Iconos SVG reutilizables -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M2 9a15 15 0 0 1 20 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="19.5" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M2 2l20 20M8.5 16a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 4.2-2.4M16.7 10.9A10 10 0 0 1 19 12.5M2 9a15 15 0 0 1 4.6-2.8M11 5a15 15 0 0 1 11 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="19.5" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="4" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-sync" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><path d="M21 15l-5-5L5 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4z M8 2v16M16 6v16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <!-- Encabezado -->
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-icon"><use href="#i-alert"/></svg>
+      <div>
+        <h1>Incidencias</h1>
+        <p>Registro de incidencias del campus</p>
+      </div>
+    </div>
+    <span id="estadoRed" class="chip chip-online">
+      <svg><use href="#i-wifi"/></svg><span>En línea</span>
+    </span>
+  </header>
+
+  <!-- Aviso de actualización del Service Worker -->
+  <div id="bannerActualizacion" class="banner" hidden>
+    <span>Hay una nueva versión disponible.</span>
+    <button id="btnActualizar" class="btn btn-sm btn-light">Actualizar</button>
+  </div>
+
+  <!-- Aviso sin conexión -->
+  <div id="bannerOffline" class="banner banner-warn" hidden>
+    <svg><use href="#i-wifi-off"/></svg>
+    <span>Sin conexión. Puedes registrar y consultar incidencias; se sincronizarán al volver el internet.</span>
+  </div>
+
+  <main>
+
+    <!-- ===================== PANTALLA: LISTA ===================== -->
+    <section id="vista-lista" class="vista activa">
+      <div class="resumen">
+        <div class="stat"><strong id="statTotal">0</strong><span>Total</span></div>
+        <div class="stat"><strong id="statPendientes">0</strong><span>Sin sincronizar</span></div>
+        <div class="stat"><strong id="statAltas">0</strong><span>Prioridad alta</span></div>
+      </div>
+
+      <div class="fila-acciones">
+        <button id="btnSincronizar" class="btn btn-primary" data-requiere-red>
+          <svg><use href="#i-sync"/></svg> Sincronizar con servidor
+        </button>
+      </div>
+
+      <div class="filtros">
+        <input id="buscar" type="search" placeholder="Buscar por título o descripción">
+        <select id="filtroTipo">
+          <option value="">Todos los tipos</option>
+          <option>Infraestructura</option>
+          <option>Equipo de cómputo</option>
+          <option>Limpieza</option>
+          <option>Seguridad</option>
+          <option>Otro</option>
+        </select>
+      </div>
+
+      <ul id="listaIncidencias" class="lista"></ul>
+      <div id="listaVacia" class="vacio" hidden>
+        <svg><use href="#i-list"/></svg>
+        <p>Aún no hay incidencias registradas.</p>
+        <button class="btn btn-primary" data-ir="nueva"><svg><use href="#i-plus"/></svg> Registrar la primera</button>
+      </div>
+    </section>
+
+    <!-- ===================== PANTALLA: NUEVA ===================== -->
+    <section id="vista-nueva" class="vista">
+      <h2>Nueva incidencia</h2>
+      <form id="formIncidencia" novalidate>
+        <label>Título
+          <input id="titulo" required maxlength="80" placeholder="Ej. Proyector no enciende en aula 12">
+        </label>
+
+        <div class="dos-columnas">
+          <label>Tipo
+            <select id="tipo" required>
+              <option>Infraestructura</option>
+              <option>Equipo de cómputo</option>
+              <option>Limpieza</option>
+              <option>Seguridad</option>
+              <option>Otro</option>
+            </select>
+          </label>
+          <label>Prioridad
+            <select id="prioridad">
+              <option value="baja">Baja</option>
+              <option value="media" selected>Media</option>
+              <option value="alta">Alta</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Descripción
+          <textarea id="descripcion" rows="3" maxlength="500" placeholder="Describe brevemente lo ocurrido"></textarea>
+        </label>
+
+        <!-- Característica física 1: CÁMARA -->
+        <fieldset class="bloque">
+          <legend><svg><use href="#i-camera"/></svg> Evidencia fotográfica</legend>
+          <p class="ayuda">Requiere permiso de <b>cámara</b>. El navegador te lo pedirá la primera vez.</p>
+          <div class="fila-botones">
+            <button type="button" id="btnAbrirCamara" class="btn btn-outline"><svg><use href="#i-camera"/></svg> Abrir cámara</button>
+            <label class="btn btn-outline btn-file">
+              <svg><use href="#i-image"/></svg> Elegir imagen
+              <input id="inputFoto" type="file" accept="image/*" capture="environment" hidden>
+            </label>
+          </div>
+          <div id="camaraWrap" class="camara" hidden>
+            <video id="video" autoplay playsinline muted></video>
+            <div class="fila-botones">
+              <button type="button" id="btnCapturar" class="btn btn-primary"><svg><use href="#i-camera"/></svg> Capturar</button>
+              <button type="button" id="btnCerrarCamara" class="btn btn-light"><svg><use href="#i-x"/></svg> Cerrar</button>
+            </div>
+          </div>
+          <div id="previewWrap" class="preview" hidden>
+            <img id="previewFoto" alt="Vista previa de la evidencia">
+            <button type="button" id="btnQuitarFoto" class="btn btn-sm btn-light"><svg><use href="#i-x"/></svg> Quitar</button>
+          </div>
+          <canvas id="canvas" hidden></canvas>
+        </fieldset>
+
+        <!-- Característica física 2: GEOLOCALIZACIÓN -->
+        <fieldset class="bloque">
+          <legend><svg><use href="#i-pin"/></svg> Ubicación</legend>
+          <p class="ayuda">Requiere permiso de <b>ubicación</b>. Funciona sin internet si el dispositivo tiene GPS.</p>
+          <button type="button" id="btnUbicacion" class="btn btn-outline"><svg><use href="#i-pin"/></svg> Obtener ubicación actual</button>
+          <p id="textoUbicacion" class="dato">Sin ubicación.</p>
+        </fieldset>
+
+        <div class="fila-botones fin">
+          <button type="button" class="btn btn-light" data-ir="lista">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><svg><use href="#i-check"/></svg> Guardar incidencia</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===================== PANTALLA: AJUSTES ===================== -->
+    <section id="vista-ajustes" class="vista">
+      <h2>Ajustes y diagnóstico</h2>
+
+      <div class="tarjeta">
+        <h3><svg><use href="#i-bell"/></svg> Notificaciones</h3>
+        <p class="ayuda">Se avisa cuando se guarda una incidencia, cuando se sincronizan y cuando vuelve la conexión.</p>
+        <p>Permiso actual: <b id="estadoPermisoNoti">-</b></p>
+        <div class="fila-botones">
+          <button id="btnPermisoNoti" class="btn btn-primary"><svg><use href="#i-bell"/></svg> Activar notificaciones</button>
+          <button id="btnProbarNoti" class="btn btn-outline">Enviar notificación de prueba</button>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <h3><svg><use href="#i-gear"/></svg> Service Worker y caché</h3>
+        <ul class="diagnostico">
+          <li>Soporte de Service Worker: <b id="dSW">-</b></li>
+          <li>Estado del Service Worker: <b id="dEstadoSW">-</b></li>
+          <li>Versión de caché: <b id="dCache">-</b></li>
+          <li>Recursos en caché: <b id="dRecursos">-</b></li>
+          <li>Cámara (getUserMedia): <b id="dCamara">-</b></li>
+          <li>Geolocalización: <b id="dGeo">-</b></li>
+          <li>Notificaciones: <b id="dNoti">-</b></li>
+          <li>Modo de visualización: <b id="dModo">-</b></li>
+        </ul>
+        <div class="fila-botones">
+          <button id="btnBuscarActualizacion" class="btn btn-outline"><svg><use href="#i-sync"/></svg> Buscar actualización</button>
+          <button id="btnInstalar" class="btn btn-primary" hidden><svg><use href="#i-download"/></svg> Instalar app</button>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <h3><svg><use href="#i-trash"/></svg> Datos locales</h3>
+        <p class="ayuda">Las incidencias se guardan en IndexedDB dentro del navegador.</p>
+        <button id="btnBorrarTodo" class="btn btn-danger"><svg><use href="#i-trash"/></svg> Borrar todas las incidencias</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal de detalle -->
+  <dialog id="modalDetalle" class="modal">
+    <div class="modal-cab">
+      <h3 id="detTitulo"></h3>
+      <button class="btn-icono" id="btnCerrarModal" aria-label="Cerrar"><svg><use href="#i-x"/></svg></button>
+    </div>
+    <img id="detFoto" alt="Evidencia" hidden>
+    <dl class="detalle">
+      <dt>Tipo</dt><dd id="detTipo"></dd>
+      <dt>Prioridad</dt><dd id="detPrioridad"></dd>
+      <dt>Fecha</dt><dd id="detFecha"></dd>
+      <dt>Estado</dt><dd id="detEstado"></dd>
+      <dt>Ubicación</dt><dd id="detUbicacion"></dd>
+      <dt>Descripción</dt><dd id="detDescripcion"></dd>
+    </dl>
+    <div class="fila-botones">
+      <button id="btnVerMapa" class="btn btn-outline" data-requiere-red><svg><use href="#i-map"/></svg> Ver en mapa</button>
+      <button id="btnEliminar" class="btn btn-danger"><svg><use href="#i-trash"/></svg> Eliminar</button>
+    </div>
+  </dialog>
+
+  <!-- Mensajes emergentes -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Navegación inferior -->
+  <nav class="tabbar">
+    <button data-ir="lista" class="activo"><svg><use href="#i-list"/></svg><span>Incidencias</span></button>
+    <button data-ir="nueva"><svg><use href="#i-plus"/></svg><span>Nueva</span></button>
+    <button data-ir="ajustes"><svg><use href="#i-gear"/></svg><span>Ajustes</span></button>
+  </nav>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
